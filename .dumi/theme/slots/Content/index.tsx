@@ -2,7 +2,7 @@ import React, { useContext, useLayoutEffect, useMemo } from 'react';
 import { Col, Flex, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import classNames from 'classnames';
-import { FormattedMessage, useRouteMeta } from 'dumi';
+import { useRouteMeta } from 'dumi';
 
 import useLayoutState from '../../../hooks/useLayoutState';
 import useLocation from '../../../hooks/useLocation';
@@ -73,14 +73,6 @@ const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
               <Flex gap="small">
                 <div>{meta.frontmatter?.title}</div>
                 <div>{meta.frontmatter?.subtitle}</div>
-                {!pathname.startsWith('/components/overview') && (
-                  <InViewSuspense fallback={null}>
-                    <EditButton
-                      title={<FormattedMessage id="app.content.edit-page" />}
-                      filename={meta.frontmatter.filename}
-                    />
-                  </InViewSuspense>
-                )}
               </Flex>
               {pathname.startsWith('/components/') && (
                 <InViewSuspense fallback={null}>
@@ -97,9 +89,12 @@ const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
           {/* Import Info */}
           {meta.frontmatter.category === 'Components' &&
             String(meta.frontmatter.showImport) !== 'false' && (
-              <ComponentMeta component={meta.frontmatter.title} source />
+              <ComponentMeta
+                component={meta.frontmatter.title}
+                source
+                filename={meta.frontmatter.filename}
+              />
             )}
-
           <div style={{ minHeight: 'calc(100vh - 64px)' }}>{children}</div>
           <InViewSuspense>
             <ColumnCard
